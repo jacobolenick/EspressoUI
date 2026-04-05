@@ -791,12 +791,90 @@
       color: var(--neutral-500);
       line-height: 18px;
     }
+
+    /* ── Hamburger button ────────────────────────────────────── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      padding: 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--zinc-400);
+      border-radius: 1px;
+      transition: all 0.2s;
+    }
+
+    /* ── Sidebar overlay (mobile) ────────────────────────────── */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 40;
+    }
+    .sidebar-overlay.visible { display: block; }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .header-links { display: none; }
+      .header-logo-version { display: none; }
+
+      .sidebar {
+        position: fixed;
+        top: var(--header-h);
+        left: 0;
+        bottom: 0;
+        z-index: 45;
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+      }
+      .sidebar.open { transform: translateX(0); }
+
+      .page-content {
+        padding: var(--space-6) var(--space-4);
+      }
+
+      /* Alert stacks vertically on mobile */
+      .alert {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-3);
+      }
+      .alert-btn { width: 100%; justify-content: center; }
+
+      /* Preview box reduces padding */
+      .preview-box { padding: var(--space-4); }
+
+      /* Alert dialog cards go fluid on mobile */
+      .ad-card.size-default,
+      .ad-card.size-sm {
+        width: 100%;
+      }
+
+      /* preview-top stacks on very small screens */
+      .preview-top { flex-wrap: wrap; gap: 8px; }
+    }
   </style>
 </head>
 <body>
 
 <!-- ── Header ─────────────────────────────────────────────────── -->
 <header class="header">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
   <a class="header-logo" href="#" onclick="navigate('overview'); return false;">
     <img src="/logo.svg" alt="Espresso UI" style="height:22px; width:auto; display:block;" />
   </a>
@@ -807,6 +885,8 @@
     <a class="header-link" href="https://ui.shadcn.com/docs/components/button" target="_blank">↗ Docs</a>
   </nav>
 </header>
+
+<div class="sidebar-overlay" onclick="closeSidebar()"></div>
 
 <!-- ── Layout ──────────────────────────────────────────────────── -->
 <div class="layout">
@@ -1952,7 +2032,18 @@
 // ── Navigation ─────────────────────────────────────────────────
 const BUILT_PAGES = ['overview','colors','typography','spacing','radius','alerts','alert-dialog'];
 
+function toggleSidebar() {
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.querySelector('.sidebar-overlay').classList.toggle('visible');
+}
+
+function closeSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.querySelector('.sidebar-overlay').classList.remove('visible');
+}
+
 function navigate(page) {
+  closeSidebar();
   // Hide all pages
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   // Update nav
