@@ -497,14 +497,37 @@
     }
 
     /* ── Alert component (mirrored from Figma) ──────────────── */
+    /* Light defaults */
+    .alert-preview {
+      --alert-bg: #ffffff;
+      --alert-border: #d4d4d4;
+      --alert-title: #0a0a0a;
+      --alert-desc: #737373;
+      --alert-btn-bg: #ffffff;
+      --alert-btn-border: #e5e5e5;
+      --alert-btn-text: #0a0a0a;
+      transition: background 0.2s;
+    }
+    /* Dark overrides */
+    .alert-preview.theme-dark {
+      --alert-bg: #171717;
+      --alert-border: #404040;
+      --alert-title: #fafafa;
+      --alert-desc: #737373;
+      --alert-btn-bg: #000000;
+      --alert-btn-border: #262626;
+      --alert-btn-text: #fafafa;
+      background: #000000;
+    }
+
     .alert {
       display: flex;
       align-items: center;
       gap: 24px;
       width: 100%;
       padding: 12px;
-      background: #ffffff;
-      border: 1px solid var(--neutral-300);
+      background: var(--alert-bg);
+      border: 1px solid var(--alert-border);
       border-radius: 10px;
       overflow: hidden;
     }
@@ -523,19 +546,28 @@
       font-weight: 600;
       font-size: 18px;
       line-height: 28px;
-      color: var(--neutral-950);
+      color: var(--alert-title);
     }
     .alert-desc {
       font-family: 'Inter', sans-serif;
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
-      color: var(--neutral-500);
+      color: var(--alert-desc);
     }
+    /* Destructive — light */
     .alert.destructive .alert-title { color: #dc2626; }
     .alert.destructive .alert-desc  { color: #ef4444; }
+    /* Destructive — dark */
+    .alert-preview.theme-dark .alert.destructive .alert-title { color: #f87171; }
+    .alert-preview.theme-dark .alert.destructive .alert-desc  { color: #f87171; }
+    /* Success — light */
     .alert.success .alert-title { color: #15803d; }
     .alert.success .alert-desc  { color: #16a34a; }
+    /* Success — dark */
+    .alert-preview.theme-dark .alert.success .alert-title { color: #4ade80; }
+    .alert-preview.theme-dark .alert.success .alert-desc  { color: #4ade80; }
+
     .alert-icon.success-tint {
       filter: invert(40%) sepia(90%) saturate(400%) hue-rotate(100deg) brightness(90%);
     }
@@ -544,19 +576,19 @@
       display: flex; align-items: center; justify-content: center;
       height: 32px;
       padding: 8px 10px;
-      background: #ffffff;
-      border: 1px solid var(--neutral-200);
+      background: var(--alert-btn-bg);
+      border: 1px solid var(--alert-btn-border);
       border-radius: 8px;
       font-family: 'Inter', sans-serif;
       font-weight: 500;
       font-size: 12px;
-      color: var(--neutral-950);
+      color: var(--alert-btn-text);
       white-space: nowrap;
       cursor: pointer;
       flex-shrink: 0;
       transition: background 0.15s;
     }
-    .alert-btn:hover { background: var(--neutral-50); }
+    .alert-btn:hover { opacity: 0.85; }
 
     /* ── Props table ─────────────────────────────────────────── */
     .props-table {
@@ -1255,7 +1287,14 @@
             <button class="tab-btn" onclick="switchTab(this, 'alert-default-code')">Code</button>
           </div>
           <div class="tab-panel active" id="tab-alert-default">
-            <div class="preview-box">
+            <div class="preview-box alert-preview" id="ap-default">
+              <div class="preview-top">
+                <span class="preview-label">Variant=Default</span>
+                <div class="theme-toggle">
+                  <button class="theme-btn active" onclick="setDialogTheme('ap-default','light',this)">☀ Light</button>
+                  <button class="theme-btn" onclick="setDialogTheme('ap-default','dark',this)">☾ Dark</button>
+                </div>
+              </div>
               <div class="alert">
                 <div class="alert-content">
                   <img class="alert-icon" src="https://www.figma.com/api/mcp/asset/1603ae7f-f076-43c9-99ee-c8b8e0a398d6" alt="" />
@@ -1296,7 +1335,14 @@
             <button class="tab-btn" onclick="switchTab(this, 'alert-destructive-code')">Code</button>
           </div>
           <div class="tab-panel active" id="tab-alert-destructive">
-            <div class="preview-box">
+            <div class="preview-box alert-preview" id="ap-destructive">
+              <div class="preview-top">
+                <span class="preview-label">Variant=Destructive</span>
+                <div class="theme-toggle">
+                  <button class="theme-btn active" onclick="setDialogTheme('ap-destructive','light',this)">☀ Light</button>
+                  <button class="theme-btn" onclick="setDialogTheme('ap-destructive','dark',this)">☾ Dark</button>
+                </div>
+              </div>
               <div class="alert destructive">
                 <div class="alert-content">
                   <img class="alert-icon" src="https://www.figma.com/api/mcp/asset/a66ec8d5-c408-44db-8b4d-4b902181f9d5" alt="" />
@@ -1338,7 +1384,14 @@
             <button class="tab-btn" onclick="switchTab(this, 'alert-success-code')">Code</button>
           </div>
           <div class="tab-panel active" id="tab-alert-success">
-            <div class="preview-box">
+            <div class="preview-box alert-preview" id="ap-success">
+              <div class="preview-top">
+                <span class="preview-label">Variant=Success</span>
+                <div class="theme-toggle">
+                  <button class="theme-btn active" onclick="setDialogTheme('ap-success','light',this)">☀ Light</button>
+                  <button class="theme-btn" onclick="setDialogTheme('ap-success','dark',this)">☾ Dark</button>
+                </div>
+              </div>
               <div class="alert success">
                 <div class="alert-content">
                   <img class="alert-icon success-tint" src="https://www.figma.com/api/mcp/asset/1603ae7f-f076-43c9-99ee-c8b8e0a398d6" alt="" />
