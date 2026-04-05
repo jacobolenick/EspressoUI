@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Espresso UI ☕ — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-theme" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+
+  <style>
+    /* ── CSS Variables from Figma ───────────────────────────── */
+    :root {
+      --color-background: #ffffff;
+      --color-foreground: #fefefe;
+
+      --zinc-50: #fafafa; --zinc-100: #f4f4f5; --zinc-200: #e4e4e7;
+      --zinc-300: #d4d4d8; --zinc-400: #a1a1aa; --zinc-500: #71717a;
+      --zinc-600: #525252; --zinc-700: #3f3f46; --zinc-800: #27272a;
+      --zinc-900: #18181b; --zinc-950: #09090b;
+
+      --neutral-50: #fafafa; --neutral-100: #f5f5f5; --neutral-200: #e5e5e5;
+      --neutral-300: #d4d4d4; --neutral-400: #a3a3a3; --neutral-500: #737373;
+      --neutral-600: #525252; --neutral-700: #404040; --neutral-800: #262626;
+      --neutral-900: #171717; --neutral-950: #0a0a0a;
+
+      --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1; --slate-400: #94a3b8; --slate-500: #64748b;
+      --slate-600: #475569; --slate-700: #334155; --slate-800: #1e293b;
+      --slate-900: #0f172a; --slate-950: #020617;
+
+      --blue-50: #eff6ff; --blue-100: #dbeafe; --blue-200: #bfdbfe;
+      --blue-300: #93c5fd; --blue-400: #60a5fa; --blue-500: #3b82f6;
+      --blue-600: #2563eb; --blue-700: #1d4ed8; --blue-800: #1e40af;
+      --blue-900: #1e3a8a; --blue-950: #172554;
+
+      --red-50: #fef2f2; --red-100: #fee2e2; --red-200: #fecaca;
+      --red-300: #fca5a5; --red-400: #f87171; --red-500: #ef4444;
+      --red-600: #dc2626; --red-700: #b91c1c; --red-800: #991b1b;
+      --red-900: #7f1d1d; --red-950: #450a0a;
+
+      --green-50: #f0fdf4; --green-100: #dcfce7; --green-500: #22c55e;
+      --green-600: #16a34a; --green-700: #15803d;
+
+      --amber-50: #fffbeb; --amber-100: #fef3c7; --amber-500: #f59e0b;
+      --amber-600: #d97706; --amber-700: #b45309;
+
+      /* Radius */
+      --radius-xs: 2px; --radius-sm: 6px; --radius-md: 8px;
+      --radius-lg: 10px; --radius-xl: 14px; --radius-2xl: 16px;
+      --radius-3xl: 24px; --radius-4xl: 32px;
+
+      /* Spacing scale (4px base) */
+      --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+      --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+      --space-12: 48px; --space-16: 64px; --space-24: 96px;
+
+      /* Typography */
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'Geist Mono', monospace;
+      --text-xs: 12px; --lh-xs: 16px;
+      --text-sm: 14px; --lh-sm: 20px;
+      --text-base: 16px; --lh-base: 24px;
+      --text-lg: 18px; --lh-lg: 28px;
+      --text-xl: 20px; --lh-xl: 28px;
+      --text-2xl: 24px; --lh-2xl: 32px;
+      --text-3xl: 30px; --lh-3xl: 36px;
+      --text-4xl: 36px; --lh-4xl: 40px;
+
+      /* UI */
+      --sidebar-w: 240px;
+      --sidebar-bg: var(--zinc-950);
+      --sidebar-border: var(--zinc-800);
+      --content-bg: var(--neutral-50);
+      --header-h: 56px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      color: var(--neutral-900);
+      background: var(--neutral-50);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── Header ─────────────────────────────────────────────── */
+    .header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      height: var(--header-h);
+      background: var(--zinc-950);
+      border-bottom: 1px solid var(--zinc-800);
+      display: flex; align-items: center;
+      padding: 0 var(--space-6);
+      gap: var(--space-3);
+    }
+    .header-logo {
+      display: flex; align-items: center; gap: var(--space-2);
+      text-decoration: none;
+    }
+    .header-logo-icon {
+      font-size: 20px; line-height: 1;
+    }
+    .header-logo-name {
+      font-size: var(--text-base);
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+    .header-logo-version {
+      font-size: var(--text-xs);
+      color: var(--zinc-500);
+      background: var(--zinc-800);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+    }
+    .header-divider {
+      flex: 1;
+    }
+    .header-links {
+      display: flex; align-items: center; gap: var(--space-4);
+    }
+    .header-link {
+      font-size: var(--text-sm);
+      color: var(--zinc-400);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .header-link:hover { color: #ffffff; }
+    .header-badge {
+      font-size: var(--text-xs);
+      font-weight: 500;
+      background: var(--neutral-800);
+      color: var(--neutral-400);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--neutral-700);
+    }
+
+    /* ── Layout ─────────────────────────────────────────────── */
+    .layout {
+      display: flex;
+      margin-top: var(--header-h);
+      height: calc(100vh - var(--header-h));
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ─────────────────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--sidebar-border);
+      overflow-y: auto;
+      flex-shrink: 0;
+      padding: var(--space-4) 0;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--zinc-700); border-radius: 2px; }
+
+    .nav-section { padding: var(--space-4) 0 var(--space-2); }
+    .nav-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--zinc-600);
+      padding: 0 var(--space-4) var(--space-1);
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: var(--space-2);
+      padding: 6px var(--space-4);
+      font-size: var(--text-sm);
+      color: var(--zinc-400);
+      cursor: pointer;
+      border-radius: 0;
+      text-decoration: none;
+      transition: all 0.1s;
+      position: relative;
+    }
+    .nav-item:hover { color: #ffffff; background: var(--zinc-800); }
+    .nav-item.active {
+      color: #ffffff;
+      background: var(--zinc-800);
+    }
+    .nav-item.active::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: #ffffff;
+      border-radius: 0 2px 2px 0;
+    }
+    .nav-item-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green-500);
+      flex-shrink: 0;
+    }
+    .nav-item-soon {
+      font-size: 10px;
+      color: var(--zinc-600);
+      margin-left: auto;
+    }
+
+    /* ── Main content ───────────────────────────────────────── */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--content-bg);
+    }
+    .main::-webkit-scrollbar { width: 6px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: var(--neutral-200); border-radius: 3px; }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .page-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--space-10) var(--space-8);
+    }
+
+    /* ── Breadcrumb ─────────────────────────────────────────── */
+    .breadcrumb {
+      display: flex; align-items: center; gap: var(--space-2);
+      font-size: var(--text-xs);
+      color: var(--neutral-400);
+      margin-bottom: var(--space-6);
+    }
+    .breadcrumb-sep { color: var(--neutral-300); }
+    .breadcrumb-current { color: var(--neutral-700); font-weight: 500; }
+
+    /* ── Page header ────────────────────────────────────────── */
+    .page-header { margin-bottom: var(--space-10); }
+    .page-title {
+      font-size: var(--text-3xl);
+      font-weight: 700;
+      color: var(--neutral-950);
+      letter-spacing: -0.02em;
+      line-height: var(--lh-3xl);
+      margin-bottom: var(--space-3);
+    }
+    .page-description {
+      font-size: var(--text-base);
+      color: var(--neutral-500);
+      line-height: var(--lh-base);
+      max-width: 560px;
+    }
+    .page-divider {
+      border: none;
+      border-top: 1px solid var(--neutral-100);
+      margin: var(--space-8) 0;
+    }
+
+    /* ── Section ─────────────────────────────────────────────── */
+    .section { margin-bottom: var(--space-12); }
+    .section-title {
+      font-size: var(--text-lg);
+      font-weight: 600;
+      color: var(--neutral-900);
+      margin-bottom: var(--space-1);
+      letter-spacing: -0.01em;
+    }
+    .section-desc {
+      font-size: var(--text-sm);
+      color: var(--neutral-500);
+      margin-bottom: var(--space-5);
+      line-height: var(--lh-sm);
+    }
+
+    /* ── Color palettes ─────────────────────────────────────── */
+    .palette-grid {
+      display: flex; flex-direction: column; gap: var(--space-6);
+    }
+    .palette { }
+    .palette-name {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--neutral-500);
+      margin-bottom: var(--space-2);
+    }
+    .palette-swatches {
+      display: flex; gap: 0;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .swatch {
+      flex: 1;
+      height: 48px;
+      position: relative;
+      cursor: pointer;
+      transition: flex 0.2s;
+    }
+    .swatch:hover { flex: 1.5; }
+    .swatch-tooltip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%; transform: translateX(-50%);
+      background: var(--neutral-900);
+      color: white;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .swatch:hover .swatch-tooltip { display: block; }
+    .swatch-label {
+      position: absolute;
+      bottom: 4px; left: 4px;
+      font-size: 9px;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .swatch:hover .swatch-label { opacity: 1; }
+
+    /* Semantic colors */
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: var(--space-3);
+    }
+    .semantic-card {
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .semantic-swatch { height: 56px; }
+    .semantic-info {
+      padding: var(--space-2) var(--space-3);
+      background: white;
+    }
+    .semantic-info-name {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--neutral-900);
+    }
+    .semantic-info-hex {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--neutral-400);
+    }
+
+    /* ── Typography ─────────────────────────────────────────── */
+    .type-scale { display: flex; flex-direction: column; gap: 0; }
+    .type-row {
+      display: flex; align-items: baseline; gap: var(--space-6);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--neutral-100);
+    }
+    .type-meta {
+      width: 140px;
+      flex-shrink: 0;
+    }
+    .type-token {
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      color: var(--neutral-500);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .type-specs {
+      font-size: 11px;
+      color: var(--neutral-400);
+      font-family: var(--font-mono);
+    }
+    .type-sample { color: var(--neutral-950); font-weight: 400; flex: 1; }
+
+    /* ── Spacing ─────────────────────────────────────────────── */
+    .spacing-grid { display: flex; flex-direction: column; gap: var(--space-2); }
+    .spacing-row {
+      display: flex; align-items: center; gap: var(--space-4);
+      padding: var(--space-2) 0;
+    }
+    .spacing-token {
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      color: var(--neutral-500);
+      width: 80px;
+      flex-shrink: 0;
+    }
+    .spacing-value {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--neutral-400);
+      width: 40px;
+      flex-shrink: 0;
+    }
+    .spacing-bar-wrap { flex: 1; }
+    .spacing-bar {
+      height: 8px;
+      background: var(--neutral-100);
+      border-radius: 2px;
+      border-left: 2px solid var(--neutral-400);
+    }
+
+    /* ── Radius ─────────────────────────────────────────────── */
+    .radius-grid {
+      display: flex; gap: var(--space-4); flex-wrap: wrap;
+    }
+    .radius-card {
+      display: flex; flex-direction: column; align-items: center; gap: var(--space-2);
+    }
+    .radius-demo {
+      width: 56px; height: 56px;
+      background: var(--neutral-100);
+      border: 2px solid var(--neutral-300);
+    }
+    .radius-label {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--neutral-500);
+      text-align: center;
+    }
+    .radius-px {
+      font-size: 10px;
+      color: var(--neutral-400);
+      font-family: var(--font-mono);
+    }
+
+    /* ── Component tab system ───────────────────────────────── */
+    .component-meta {
+      display: flex; align-items: center; gap: var(--space-3);
+      margin-bottom: var(--space-6);
+    }
+    .component-badge {
+      font-size: var(--text-xs);
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+    }
+    .badge-stable { background: var(--green-50); color: var(--green-700); border: 1px solid var(--green-100); }
+    .badge-soon { background: var(--amber-50); color: var(--amber-700); border: 1px solid var(--amber-100); }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--neutral-200);
+      margin-bottom: var(--space-5);
+      gap: 0;
+    }
+    .tab-btn {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--neutral-500);
+      background: none;
+      border: none;
+      padding: var(--space-2) var(--space-4);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all 0.15s;
+    }
+    .tab-btn:hover { color: var(--neutral-900); }
+    .tab-btn.active {
+      color: var(--neutral-900);
+      border-bottom-color: var(--neutral-900);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Preview box ─────────────────────────────────────────── */
+    .preview-box {
+      background: var(--neutral-50);
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-lg);
+      padding: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      align-items: stretch;
+    }
+    .preview-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--neutral-400);
+      margin-bottom: var(--space-2);
+    }
+
+    /* ── Alert component (mirrored from Figma) ──────────────── */
+    .alert {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+      padding: 12px;
+      background: #ffffff;
+      border: 1px solid var(--neutral-300);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .alert-content {
+      display: flex; align-items: flex-start; gap: 24px;
+      flex: 1; min-width: 0;
+    }
+    .alert-icon {
+      width: 24px; height: 24px;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+    .alert-text { display: flex; flex-direction: column; gap: 4px; }
+    .alert-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 28px;
+      color: var(--neutral-950);
+    }
+    .alert-desc {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--neutral-500);
+    }
+    .alert.destructive .alert-title { color: #dc2626; }
+    .alert.destructive .alert-desc  { color: #ef4444; }
+    .alert.success .alert-title { color: #15803d; }
+    .alert.success .alert-desc  { color: #16a34a; }
+    .alert-icon.success-tint {
+      filter: invert(40%) sepia(90%) saturate(400%) hue-rotate(100deg) brightness(90%);
+    }
+
+    .alert-btn {
+      display: flex; align-items: center; justify-content: center;
+      height: 32px;
+      padding: 8px 10px;
+      background: #ffffff;
+      border: 1px solid var(--neutral-200);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      color: var(--neutral-950);
+      white-space: nowrap;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .alert-btn:hover { background: var(--neutral-50); }
+
+    /* ── Props table ─────────────────────────────────────────── */
+    .props-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    .props-table th {
+      text-align: left;
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--neutral-500);
+      background: var(--neutral-50);
+      border-bottom: 1px solid var(--neutral-200);
+    }
+    .props-table td {
+      padding: var(--space-3);
+      border-bottom: 1px solid var(--neutral-100);
+      vertical-align: top;
+    }
+    .props-table tr:last-child td { border-bottom: none; }
+    .prop-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--blue-600);
+      font-weight: 500;
+    }
+    .prop-type {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--neutral-500);
+    }
+    .prop-default {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--neutral-400);
+    }
+
+    /* ── Code block ─────────────────────────────────────────── */
+    .code-wrap {
+      position: relative;
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .code-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-2) var(--space-4);
+      background: var(--neutral-50);
+      border-bottom: 1px solid var(--neutral-200);
+    }
+    .code-lang {
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      color: var(--neutral-400);
+    }
+    .code-actions { display: flex; gap: var(--space-2); }
+    .code-btn {
+      font-size: var(--text-xs);
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--neutral-200);
+      background: white;
+      color: var(--neutral-700);
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .code-btn:hover { background: var(--neutral-100); }
+    .code-btn.copied { background: var(--green-50); color: var(--green-700); border-color: var(--green-100); }
+    pre { margin: 0 !important; border-radius: 0 !important; }
+    pre code { font-family: var(--font-mono) !important; font-size: 13px !important; }
+
+    /* ── Coming soon ────────────────────────────────────────── */
+    .coming-soon {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center;
+      padding: var(--space-16) var(--space-8);
+      text-align: center;
+      gap: var(--space-4);
+    }
+    .coming-soon-icon { line-height: 1; }
+    .coming-soon-title {
+      font-size: var(--text-xl);
+      font-weight: 600;
+      color: var(--neutral-900);
+    }
+    .coming-soon-desc {
+      font-size: var(--text-sm);
+      color: var(--neutral-500);
+      max-width: 380px;
+      line-height: var(--lh-sm);
+    }
+    .coming-soon-link {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--blue-600);
+      text-decoration: none;
+      padding: var(--space-2) var(--space-4);
+      border: 1px solid var(--blue-200);
+      border-radius: var(--radius-md);
+      background: var(--blue-50);
+      transition: all 0.15s;
+    }
+    .coming-soon-link:hover { background: var(--neutral-100); }
+
+    /* ── Landing / Overview ─────────────────────────────────── */
+    .hero {
+      border-radius: var(--radius-2xl);
+      background: var(--neutral-950);
+      padding: var(--space-10);
+      margin-bottom: var(--space-10);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40%; right: -10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+    }
+    .hero-eyebrow {
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--neutral-500);
+      margin-bottom: var(--space-3);
+    }
+    .hero-title {
+      font-size: 40px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: var(--space-4);
+    }
+    .hero-desc {
+      font-size: var(--text-base);
+      color: var(--zinc-400);
+      line-height: var(--lh-base);
+      max-width: 480px;
+      margin-bottom: var(--space-6);
+    }
+    .hero-stats {
+      display: flex; gap: var(--space-8);
+    }
+    .hero-stat-value {
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .hero-stat-label {
+      font-size: var(--text-xs);
+      color: var(--zinc-500);
+      margin-top: 2px;
+    }
+
+    .overview-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-10);
+    }
+    .overview-card {
+      padding: var(--space-5);
+      border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-lg);
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .overview-card:hover {
+      border-color: var(--neutral-300);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .overview-card-icon {
+      width: 32px; height: 32px;
+      margin-bottom: var(--space-3);
+      color: var(--neutral-700);
+    }
+    .overview-card-icon svg { display: block; }
+    .overview-card-title {
+      font-size: var(--text-base);
+      font-weight: 600;
+      color: var(--neutral-900);
+      margin-bottom: var(--space-1);
+    }
+    .overview-card-desc {
+      font-size: var(--text-xs);
+      color: var(--neutral-500);
+      line-height: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────────── -->
+<header class="header">
+  <a class="header-logo" href="#" onclick="navigate('overview'); return false;">
+    <img src="/logo.svg" alt="Espresso UI" style="height:22px; width:auto; display:block;" />
+  </a>
+  <span class="header-logo-version">v1.0</span>
+  <div class="header-divider"></div>
+  <nav class="header-links">
+    <a class="header-link" href="https://www.figma.com/design/25aJqGSvglICjHhLEM5xg9/Espresso-UI-%E2%98%95" target="_blank">↗ Figma</a>
+    <a class="header-link" href="https://ui.shadcn.com/docs/components/button" target="_blank">↗ Docs</a>
+  </nav>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────────── -->
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="nav-section">
+      <div class="nav-section-label">Getting Started</div>
+      <a class="nav-item active" data-page="overview" onclick="navigate('overview'); return false;">
+        Overview
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Foundation</div>
+      <a class="nav-item" data-page="colors" onclick="navigate('colors'); return false;">Colors</a>
+      <a class="nav-item" data-page="typography" onclick="navigate('typography'); return false;">Typography</a>
+      <a class="nav-item" data-page="spacing" onclick="navigate('spacing'); return false;">Spacing</a>
+      <a class="nav-item" data-page="radius" onclick="navigate('radius'); return false;">Border Radius</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Components</div>
+      <a class="nav-item" data-page="alerts" onclick="navigate('alerts'); return false;">
+        <span class="nav-item-dot"></span>
+        Alerts
+      </a>
+      <!-- Coming soon pages, alphabetical from Figma -->
+      <a class="nav-item" data-page="accordion" onclick="navigate('accordion'); return false;">
+        Accordion <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="alert-dialog" onclick="navigate('alert-dialog'); return false;">
+        <span class="nav-item-dot"></span>
+        Alert Dialog
+      </a>
+      <a class="nav-item" data-page="aspect-ratio" onclick="navigate('aspect-ratio'); return false;">
+        Aspect Ratio <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="badges" onclick="navigate('badges'); return false;">
+        Badges <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="banners" onclick="navigate('banners'); return false;">
+        Banners <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="breadcrumbs" onclick="navigate('breadcrumbs'); return false;">
+        Breadcrumbs <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="buttons" onclick="navigate('buttons'); return false;">
+        Buttons <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="cards" onclick="navigate('cards'); return false;">
+        Cards <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="checkboxes" onclick="navigate('checkboxes'); return false;">
+        Checkboxes <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="chips" onclick="navigate('chips'); return false;">
+        Chips <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="data-display" onclick="navigate('data-display'); return false;">
+        Data Display <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="date-pickers" onclick="navigate('date-pickers'); return false;">
+        Date Pickers <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="dialogs" onclick="navigate('dialogs'); return false;">
+        Dialogs <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="dividers" onclick="navigate('dividers'); return false;">
+        Dividers <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="dropdowns" onclick="navigate('dropdowns'); return false;">
+        Dropdowns <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="empty-states" onclick="navigate('empty-states'); return false;">
+        Empty States <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="error-pages" onclick="navigate('error-pages'); return false;">
+        Error Pages <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="feedback" onclick="navigate('feedback'); return false;">
+        Feedback <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="forms" onclick="navigate('forms'); return false;">
+        Forms <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="inputs" onclick="navigate('inputs'); return false;">
+        Inputs <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="links" onclick="navigate('links'); return false;">
+        Links <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="lists" onclick="navigate('lists'); return false;">
+        Lists <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="loading-states" onclick="navigate('loading-states'); return false;">
+        Loading States <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="menus" onclick="navigate('menus'); return false;">
+        Menus <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="modals" onclick="navigate('modals'); return false;">
+        Modals <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="navigation" onclick="navigate('navigation'); return false;">
+        Navigation <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="notifications" onclick="navigate('notifications'); return false;">
+        Notifications <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="pagination" onclick="navigate('pagination'); return false;">
+        Pagination <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="pills" onclick="navigate('pills'); return false;">
+        Pills <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="popovers" onclick="navigate('popovers'); return false;">
+        Popovers <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="progress-bars" onclick="navigate('progress-bars'); return false;">
+        Progress Bars <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="radio-buttons" onclick="navigate('radio-buttons'); return false;">
+        Radio Buttons <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="search" onclick="navigate('search'); return false;">
+        Search <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="selects" onclick="navigate('selects'); return false;">
+        Selects <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="skeletons" onclick="navigate('skeletons'); return false;">
+        Skeletons <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="sliders" onclick="navigate('sliders'); return false;">
+        Sliders <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="snackbars" onclick="navigate('snackbars'); return false;">
+        Snackbars <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="spinners" onclick="navigate('spinners'); return false;">
+        Spinners <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="steppers" onclick="navigate('steppers'); return false;">
+        Steppers <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="switches" onclick="navigate('switches'); return false;">
+        Switches <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="tables" onclick="navigate('tables'); return false;">
+        Tables <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="tabs" onclick="navigate('tabs'); return false;">
+        Tabs <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="tags" onclick="navigate('tags'); return false;">
+        Tags <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="textareas" onclick="navigate('textareas'); return false;">
+        Textareas <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="toasts" onclick="navigate('toasts'); return false;">
+        Toasts <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="toggles" onclick="navigate('toggles'); return false;">
+        Toggles <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="tooltips" onclick="navigate('tooltips'); return false;">
+        Tooltips <span class="nav-item-soon">Soon</span>
+      </a>
+      <a class="nav-item" data-page="upload" onclick="navigate('upload'); return false;">
+        Upload <span class="nav-item-soon">Soon</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- ── Overview ──────────────────────────────────────────── -->
+    <div class="page active" id="page-overview">
+      <div class="page-content">
+        <div class="hero">
+          <div class="hero-eyebrow">Espresso UI Design System</div>
+          <div class="hero-title">Build faster.<br/>Stay consistent.</div>
+          <div class="hero-desc">A complete component library and design token system for teams building with React. Every token sourced directly from Figma.</div>
+          <div class="hero-stats">
+            <div>
+              <div class="hero-stat-value">60+</div>
+              <div class="hero-stat-label">Components</div>
+            </div>
+            <div>
+              <div class="hero-stat-value">200+</div>
+              <div class="hero-stat-label">Design Tokens</div>
+            </div>
+            <div>
+              <div class="hero-stat-value">2</div>
+              <div class="hero-stat-label">Color Modes</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="overview-cards">
+          <div class="overview-card" onclick="navigate('colors')">
+            <div class="overview-card-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="10" cy="10" r="4" fill="currentColor" opacity="0.85"/>
+                <circle cx="22" cy="10" r="4" fill="currentColor" opacity="0.5"/>
+                <circle cx="10" cy="22" r="4" fill="currentColor" opacity="0.35"/>
+                <circle cx="22" cy="22" r="4" fill="currentColor" opacity="0.2"/>
+              </svg>
+            </div>
+            <div class="overview-card-title">Colors</div>
+            <div class="overview-card-desc">Semantic palettes for brand, status, and neutrals. Light & dark modes.</div>
+          </div>
+          <div class="overview-card" onclick="navigate('typography')">
+            <div class="overview-card-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <text x="2" y="24" font-family="Inter, sans-serif" font-weight="700" font-size="22" fill="currentColor">A</text>
+                <text x="19" y="24" font-family="Inter, sans-serif" font-weight="400" font-size="14" fill="currentColor" opacity="0.5">a</text>
+              </svg>
+            </div>
+            <div class="overview-card-title">Typography</div>
+            <div class="overview-card-desc">Inter type scale from text-xs to text-9xl with paired line heights.</div>
+          </div>
+          <div class="overview-card" onclick="navigate('spacing')">
+            <div class="overview-card-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="4" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="4" y1="16" x2="8" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="4" y1="16" x2="8" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="28" y1="16" x2="24" y2="12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="28" y1="16" x2="24" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="4" y1="9" x2="4" y2="23" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+                <line x1="28" y1="9" x2="28" y2="23" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+              </svg>
+            </div>
+            <div class="overview-card-title">Spacing</div>
+            <div class="overview-card-desc">4px base grid with 35 steps — mapped to Tailwind spacing tokens.</div>
+          </div>
+          <div class="overview-card" onclick="navigate('radius')">
+            <div class="overview-card-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="22" height="22" rx="2" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                <rect x="5" y="5" width="22" height="22" rx="8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M5 14 Q5 5 14 5" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/>
+              </svg>
+            </div>
+            <div class="overview-card-title">Border Radius</div>
+            <div class="overview-card-desc">8-step radius scale from xs (2px) to 4xl (32px).</div>
+          </div>
+          <div class="overview-card" onclick="navigate('alerts')">
+            <div class="overview-card-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="8" width="24" height="16" rx="4" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="4" y1="14" x2="28" y2="14" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                <circle cx="10" cy="11" r="1.5" fill="currentColor"/>
+                <line x1="14" y1="19" x2="24" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+                <line x1="14" y1="22" x2="20" y2="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+              </svg>
+            </div>
+            <div class="overview-card-title">Alerts</div>
+            <div class="overview-card-desc">Surface-level notifications with default, destructive, and success variants.</div>
+          </div>
+          <div class="overview-card" style="cursor:default; opacity:0.4;">
+            <div class="overview-card-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="16" r="2" fill="currentColor"/>
+                <circle cx="16" cy="16" r="2" fill="currentColor"/>
+                <circle cx="24" cy="16" r="2" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="overview-card-title">More coming</div>
+            <div class="overview-card-desc">55+ more components being built. Check back soon.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Colors ─────────────────────────────────────────────── -->
+    <div class="page" id="page-colors">
+      <div class="page-content">
+        <div class="breadcrumb">
+          <span>Foundation</span><span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current">Colors</span>
+        </div>
+        <div class="page-header">
+          <h1 class="page-title">Colors</h1>
+          <p class="page-description">All color tokens are sourced directly from your Figma variables. Light and dark modes are defined for every color. Click any swatch to copy its hex value.</p>
+        </div>
+        <hr class="page-divider" />
+
+        <div class="section">
+          <div class="section-title">Semantic</div>
+          <div class="section-desc">High-level semantic colors used across the system.</div>
+          <div class="semantic-grid">
+            <div class="semantic-card">
+              <div class="semantic-swatch" style="background:#ffffff; border-bottom:1px solid #e5e5e5;"></div>
+              <div class="semantic-info"><div class="semantic-info-name">Background</div><div class="semantic-info-hex">#ffffff</div></div>
+            </div>
+            <div class="semantic-card">
+              <div class="semantic-swatch" style="background:#0a0a0a;"></div>
+              <div class="semantic-info"><div class="semantic-info-name">Foreground</div><div class="semantic-info-hex">#0a0a0a</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">Primary Blue</div>
+          <div class="section-desc">Primary brand color used for interactive elements, links, and focus states.</div>
+          <div id="palette-blue"></div>
+        </div>
+        <div class="section">
+          <div class="section-title">Destructive Red</div>
+          <div class="section-desc">Used for errors, destructive actions, and danger states.</div>
+          <div id="palette-red"></div>
+        </div>
+        <div class="section">
+          <div class="section-title">Success Green</div>
+          <div class="section-desc">Confirms successful operations and positive states.</div>
+          <div id="palette-green"></div>
+        </div>
+        <div class="section">
+          <div class="section-title">Warning Amber</div>
+          <div class="section-desc">Highlights warnings, cautions, and in-progress states.</div>
+          <div id="palette-amber"></div>
+        </div>
+        <div class="section">
+          <div class="section-title">Zinc</div>
+          <div class="section-desc">Cool gray scale — used for UI surfaces, sidebars, and dark backgrounds.</div>
+          <div id="palette-zinc"></div>
+        </div>
+        <div class="section">
+          <div class="section-title">Neutral</div>
+          <div class="section-desc">Warm neutral scale — used for text, borders, and content backgrounds.</div>
+          <div id="palette-neutral"></div>
+        </div>
+        <div class="section">
+          <div class="section-title">Slate</div>
+          <div class="section-desc">Blue-gray scale — alternative neutral with cooler undertones.</div>
+          <div id="palette-slate"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Typography ─────────────────────────────────────────── -->
+    <div class="page" id="page-typography">
+      <div class="page-content">
+        <div class="breadcrumb">
+          <span>Foundation</span><span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current">Typography</span>
+        </div>
+        <div class="page-header">
+          <h1 class="page-title">Typography</h1>
+          <p class="page-description">Inter is the system font with a 9-step type scale. Each step pairs a font size with a normal line height token from your Figma variables.</p>
+        </div>
+        <hr class="page-divider" />
+        <div class="section">
+          <div class="section-title">Type Scale</div>
+          <div class="section-desc">Font family: <code style="font-family:var(--font-mono);font-size:12px;background:var(--neutral-100);padding:2px 6px;border-radius:4px;">Inter</code> — sourced from your Typography variable collection.</div>
+          <div class="type-scale">
+            <div class="type-row">
+              <div class="type-meta"><code class="type-token">text-xs</code><span class="type-specs">12px / 16px</span></div>
+              <div class="type-sample" style="font-size:12px;line-height:16px;">The quick brown fox jumps over the lazy dog</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><code class="type-token">text-sm</code><span class="type-specs">14px / 20px</span></div>
+              <div class="type-sample" style="font-size:14px;line-height:20px;">The quick brown fox jumps over the lazy dog</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><code class="type-token">text-base</code><span class="type-specs">16px / 24px</span></div>
+              <div class="type-sample" style="font-size:16px;line-height:24px;">The quick brown fox jumps over the lazy dog</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><code class="type-token">text-lg</code><span class="type-specs">18px / 28px</span></div>
+              <div class="type-sample" style="font-size:18px;line-height:28px;">The quick brown fox jumps</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><code class="type-token">text-xl</code><span class="type-specs">20px / 28px</span></div>
+              <div class="type-sample" style="font-size:20px;line-height:28px;">The quick brown fox jumps</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><code class="type-token">text-2xl</code><span class="type-specs">24px / 32px</span></div>
+              <div class="type-sample" style="font-size:24px;line-height:32px;">The quick brown fox</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><code class="type-token">text-3xl</code><span class="type-specs">30px / 36px</span></div>
+              <div class="type-sample" style="font-size:30px;line-height:36px;">The quick brown fox</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><code class="type-token">text-4xl</code><span class="type-specs">36px / 40px</span></div>
+              <div class="type-sample" style="font-size:36px;line-height:40px;">The quick brown</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><code class="type-token">text-5xl</code><span class="type-specs">48px / 48px</span></div>
+              <div class="type-sample" style="font-size:48px;line-height:48px;">Display</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><code class="type-token">text-6xl</code><span class="type-specs">60px / 60px</span></div>
+              <div class="type-sample" style="font-size:60px;line-height:60px;">Display</div>
+            </div>
+            <div class="type-row">
+              <div class="type-meta"><code class="type-token">text-7xl</code><span class="type-specs">72px / 72px</span></div>
+              <div class="type-sample" style="font-size:72px;line-height:72px;">Hero</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Spacing ─────────────────────────────────────────────── -->
+    <div class="page" id="page-spacing">
+      <div class="page-content">
+        <div class="breadcrumb">
+          <span>Foundation</span><span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current">Spacing</span>
+        </div>
+        <div class="page-header">
+          <h1 class="page-title">Spacing</h1>
+          <p class="page-description">A 4px base grid with 35 named steps. All values sourced from the Spacing variable collection in Figma.</p>
+        </div>
+        <hr class="page-divider" />
+        <div class="section">
+          <div class="section-title">Scale</div>
+          <div class="spacing-grid" id="spacing-scale"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Radius ──────────────────────────────────────────────── -->
+    <div class="page" id="page-radius">
+      <div class="page-content">
+        <div class="breadcrumb">
+          <span>Foundation</span><span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current">Border Radius</span>
+        </div>
+        <div class="page-header">
+          <h1 class="page-title">Border Radius</h1>
+          <p class="page-description">An 8-step radius scale sourced from your Figma Radius variable collection.</p>
+        </div>
+        <hr class="page-divider" />
+        <div class="section">
+          <div class="section-title">Scale</div>
+          <div class="radius-grid">
+            <div class="radius-card"><div class="radius-demo" style="border-radius:2px;"></div><div class="radius-label"><code class="type-token">xs</code></div><div class="radius-px">2px</div></div>
+            <div class="radius-card"><div class="radius-demo" style="border-radius:6px;"></div><div class="radius-label"><code class="type-token">sm</code></div><div class="radius-px">6px</div></div>
+            <div class="radius-card"><div class="radius-demo" style="border-radius:8px;"></div><div class="radius-label"><code class="type-token">md</code></div><div class="radius-px">8px</div></div>
+            <div class="radius-card"><div class="radius-demo" style="border-radius:10px;"></div><div class="radius-label"><code class="type-token">lg</code></div><div class="radius-px">10px</div></div>
+            <div class="radius-card"><div class="radius-demo" style="border-radius:14px;"></div><div class="radius-label"><code class="type-token">xl</code></div><div class="radius-px">14px</div></div>
+            <div class="radius-card"><div class="radius-demo" style="border-radius:16px;"></div><div class="radius-label"><code class="type-token">2xl</code></div><div class="radius-px">16px</div></div>
+            <div class="radius-card"><div class="radius-demo" style="border-radius:24px;"></div><div class="radius-label"><code class="type-token">3xl</code></div><div class="radius-px">24px</div></div>
+            <div class="radius-card"><div class="radius-demo" style="border-radius:32px;"></div><div class="radius-label"><code class="type-token">4xl</code></div><div class="radius-px">32px</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Alerts ──────────────────────────────────────────────── -->
+    <div class="page" id="page-alerts">
+      <div class="page-content">
+        <div class="breadcrumb">
+          <span>Components</span><span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current">Alerts</span>
+        </div>
+        <div class="page-header">
+          <div class="component-meta">
+            <span class="component-badge badge-stable">Stable</span>
+            <span style="font-size:var(--text-xs);color:var(--neutral-400);font-family:var(--font-mono);">Alert.tsx</span>
+          </div>
+          <h1 class="page-title">Alerts</h1>
+          <p class="page-description">Surface-level callouts for important messages. Supports default, destructive, and success variants with optional icon, title, description, and action button.</p>
+        </div>
+        <hr class="page-divider" />
+
+        <!-- Default variant -->
+        <div class="section">
+          <div class="section-title">Default</div>
+          <div class="section-desc">Neutral alert for general informational messages.</div>
+          <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(this, 'alert-default')">Preview</button>
+            <button class="tab-btn" onclick="switchTab(this, 'alert-default-code')">Code</button>
+          </div>
+          <div class="tab-panel active" id="tab-alert-default">
+            <div class="preview-box">
+              <div class="alert">
+                <div class="alert-content">
+                  <img class="alert-icon" src="https://www.figma.com/api/mcp/asset/1603ae7f-f076-43c9-99ee-c8b8e0a398d6" alt="" />
+                  <div class="alert-text">
+                    <div class="alert-title">Alert Title Text</div>
+                    <div class="alert-desc">Alert description text</div>
+                  </div>
+                </div>
+                <button class="alert-btn">Button</button>
+              </div>
+            </div>
+          </div>
+          <div class="tab-panel" id="tab-alert-default-code">
+            <div class="code-wrap">
+              <div class="code-toolbar">
+                <span class="code-lang">tsx</span>
+                <div class="code-actions">
+                  <button class="code-btn" onclick="copyCode(this, 'code-alert-default')">Copy</button>
+                  <a class="code-btn" href="Alert.tsx" download>↓ Download</a>
+                </div>
+              </div>
+              <pre><code class="language-tsx" id="code-alert-default">&lt;Alert
+  title="Alert Title Text"
+  description="Alert description text"
+  actionLabel="Button"
+  onAction={() =&gt; {}}
+/&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Destructive variant -->
+        <div class="section">
+          <div class="section-title">Destructive</div>
+          <div class="section-desc">Red alert for errors, warnings, and destructive actions.</div>
+          <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(this, 'alert-destructive')">Preview</button>
+            <button class="tab-btn" onclick="switchTab(this, 'alert-destructive-code')">Code</button>
+          </div>
+          <div class="tab-panel active" id="tab-alert-destructive">
+            <div class="preview-box">
+              <div class="alert destructive">
+                <div class="alert-content">
+                  <img class="alert-icon" src="https://www.figma.com/api/mcp/asset/a66ec8d5-c408-44db-8b4d-4b902181f9d5" alt="" />
+                  <div class="alert-text">
+                    <div class="alert-title">Alert Title Text</div>
+                    <div class="alert-desc">Alert description text</div>
+                  </div>
+                </div>
+                <button class="alert-btn">Button</button>
+              </div>
+            </div>
+          </div>
+          <div class="tab-panel" id="tab-alert-destructive-code">
+            <div class="code-wrap">
+              <div class="code-toolbar">
+                <span class="code-lang">tsx</span>
+                <div class="code-actions">
+                  <button class="code-btn" onclick="copyCode(this, 'code-alert-destructive')">Copy</button>
+                  <a class="code-btn" href="Alert.tsx" download>↓ Download</a>
+                </div>
+              </div>
+              <pre><code class="language-tsx" id="code-alert-destructive">&lt;Alert
+  variant="destructive"
+  title="Alert Title Text"
+  description="Alert description text"
+  actionLabel="Button"
+  onAction={() =&gt; {}}
+/&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success variant -->
+        <div class="section">
+          <div class="section-title">Success</div>
+          <div class="section-desc">Green alert using your Figma Success green variables (500/600/700).</div>
+          <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(this, 'alert-success')">Preview</button>
+            <button class="tab-btn" onclick="switchTab(this, 'alert-success-code')">Code</button>
+          </div>
+          <div class="tab-panel active" id="tab-alert-success">
+            <div class="preview-box">
+              <div class="alert success">
+                <div class="alert-content">
+                  <img class="alert-icon success-tint" src="https://www.figma.com/api/mcp/asset/1603ae7f-f076-43c9-99ee-c8b8e0a398d6" alt="" />
+                  <div class="alert-text">
+                    <div class="alert-title">Saved!</div>
+                    <div class="alert-desc">Changes saved successfully.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-panel" id="tab-alert-success-code">
+            <div class="code-wrap">
+              <div class="code-toolbar">
+                <span class="code-lang">tsx</span>
+                <div class="code-actions">
+                  <button class="code-btn" onclick="copyCode(this, 'code-alert-success')">Copy</button>
+                  <a class="code-btn" href="Alert.tsx" download>↓ Download</a>
+                </div>
+              </div>
+              <pre><code class="language-tsx" id="code-alert-success">&lt;Alert
+  variant="success"
+  title="Saved!"
+  description="Changes saved successfully."
+  actionLabel={null}
+/&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Props -->
+        <div class="section">
+          <div class="section-title">Props</div>
+          <div class="code-wrap">
+            <table class="props-table">
+              <thead>
+                <tr>
+                  <th>Prop</th><th>Type</th><th>Default</th><th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="prop-name">variant</span></td>
+                  <td><span class="prop-type">"default" | "destructive" | "success"</span></td>
+                  <td><span class="prop-default">"default"</span></td>
+                  <td>Visual style of the alert</td>
+                </tr>
+                <tr>
+                  <td><span class="prop-name">icon</span></td>
+                  <td><span class="prop-type">boolean</span></td>
+                  <td><span class="prop-default">true</span></td>
+                  <td>Show or hide the leading icon</td>
+                </tr>
+                <tr>
+                  <td><span class="prop-name">title</span></td>
+                  <td><span class="prop-type">string</span></td>
+                  <td><span class="prop-default">"Alert Title Text"</span></td>
+                  <td>Alert headline text</td>
+                </tr>
+                <tr>
+                  <td><span class="prop-name">description</span></td>
+                  <td><span class="prop-type">string</span></td>
+                  <td><span class="prop-default">"Alert description text"</span></td>
+                  <td>Supporting text below the title</td>
+                </tr>
+                <tr>
+                  <td><span class="prop-name">actionLabel</span></td>
+                  <td><span class="prop-type">string | null</span></td>
+                  <td><span class="prop-default">"Button"</span></td>
+                  <td>Action button label — pass null to hide</td>
+                </tr>
+                <tr>
+                  <td><span class="prop-name">onAction</span></td>
+                  <td><span class="prop-type">() => void</span></td>
+                  <td><span class="prop-default">—</span></td>
+                  <td>Called when the action button is clicked</td>
+                </tr>
+                <tr>
+                  <td><span class="prop-name">className</span></td>
+                  <td><span class="prop-type">string</span></td>
+                  <td><span class="prop-default">—</span></td>
+                  <td>Additional CSS class names</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Design tokens used -->
+        <div class="section">
+          <div class="section-title">Design Tokens Used</div>
+          <div class="code-wrap">
+            <table class="props-table">
+              <thead>
+                <tr><th>Token</th><th>Value</th><th>Used for</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="prop-name">Neutral/300</span></td><td><span class="prop-type">#d4d4d4</span></td><td>Border</td></tr>
+                <tr><td><span class="prop-name">Neutral/950</span></td><td><span class="prop-type">#0a0a0a</span></td><td>Default title</td></tr>
+                <tr><td><span class="prop-name">Neutral/500</span></td><td><span class="prop-type">#737373</span></td><td>Default description</td></tr>
+                <tr><td><span class="prop-name">Destructive red/600</span></td><td><span class="prop-type">#dc2626</span></td><td>Destructive title</td></tr>
+                <tr><td><span class="prop-name">Destructive red/500</span></td><td><span class="prop-type">#ef4444</span></td><td>Destructive description</td></tr>
+                <tr><td><span class="prop-name">Success green/700</span></td><td><span class="prop-type">#15803d</span></td><td>Success title</td></tr>
+                <tr><td><span class="prop-name">Success green/600</span></td><td><span class="prop-type">#16a34a</span></td><td>Success description</td></tr>
+                <tr><td><span class="prop-name">Success green/500</span></td><td><span class="prop-type">#22c55e</span></td><td>Success icon tint</td></tr>
+                <tr><td><span class="prop-name">Radius/lg</span></td><td><span class="prop-type">10px</span></td><td>Container border-radius</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Alert Dialog ──────────────────────────────────────────── -->
+    <div class="page" id="page-alert-dialog">
+      <div class="page-content">
+        <div class="breadcrumb">
+          <span>Components</span><span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current">Alert Dialog</span>
+        </div>
+        <div class="page-header">
+          <div class="component-meta">
+            <span class="component-badge badge-stable">Stable</span>
+            <span style="font-size:var(--text-xs);color:var(--neutral-400);font-family:var(--font-mono);">AlertDialog.tsx</span>
+          </div>
+          <h1 class="page-title">Alert Dialog</h1>
+          <p class="page-description">A modal confirmation dialog that interrupts the user with important content and expects a response. Supports default and destructive variants in two sizes, with full light and dark mode support.</p>
+        </div>
+        <hr class="page-divider" />
+
+        <!-- Light/dark mode toggle shared state -->
+        <style>
+          /* Dialog CSS tokens — light defaults */
+          .dialog-preview {
+            --dialog-bg: #ffffff;
+            --dialog-border: #e5e5e5;
+            --dialog-title: #0a0a0a;
+            --dialog-desc: #737373;
+            --dialog-icon-bg: #f5f5f5;
+            --dialog-btn-primary-bg: #0a0a0a;
+            --dialog-btn-primary-text: #fafafa;
+            --dialog-btn-cancel-bg: #ffffff;
+            --dialog-btn-cancel-border: #e5e5e5;
+            --dialog-btn-cancel-text: #0a0a0a;
+            --destructive-red-50: #fef2f2;
+            --destructive-red-600: #dc2626;
+            --destructive-red-50-text: #fef2f2;
+            background: var(--neutral-50);
+            transition: background 0.2s;
+          }
+          /* Dark overrides */
+          .dialog-preview.theme-dark {
+            --dialog-bg: #18181b;
+            --dialog-border: #3f3f46;
+            --dialog-title: #fafafa;
+            --dialog-desc: #71717a;
+            --dialog-icon-bg: #27272a;
+            --dialog-btn-primary-bg: #fafafa;
+            --dialog-btn-primary-text: #0a0a0a;
+            --dialog-btn-cancel-bg: #27272a;
+            --dialog-btn-cancel-border: #3f3f46;
+            --dialog-btn-cancel-text: #fafafa;
+            --destructive-red-50: #450a0a;
+            background: #09090b;
+          }
+
+          /* Dialog card */
+          .ad-card {
+            background: var(--dialog-bg);
+            border: 1px solid var(--dialog-border);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
+          }
+          .ad-card.size-default { width: 384px; }
+          .ad-card.size-sm { width: 317px; align-items: center; }
+
+          .ad-main { display: flex; gap: 16px; align-items: flex-start; width: 100%; }
+          .ad-main.centered { flex-direction: column; align-items: center; gap: 8px; }
+
+          .ad-icon-wrap {
+            background: var(--dialog-icon-bg);
+            border-radius: 8px; padding: 5px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+          }
+          .ad-icon-wrap.destructive { background: var(--destructive-red-50); }
+          .ad-icon { width: 24px; height: 24px; display: block; }
+
+          .ad-text { display: flex; flex-direction: column; gap: 15px; flex: 1 0 0; min-width: 0; }
+          .ad-text.centered { align-items: center; text-align: center; width: 100%; }
+
+          .ad-title {
+            font-weight: 600; font-size: 16px; line-height: 24px;
+            color: var(--dialog-title); margin: 0;
+          }
+          .ad-desc {
+            font-weight: 400; font-size: 14px; line-height: 20px;
+            color: var(--dialog-desc); margin: 0;
+          }
+          .ad-divider {
+            width: 100%; height: 1px;
+            background: var(--dialog-border);
+            margin: 12px 0 0; flex-shrink: 0;
+          }
+          .ad-buttons {
+            display: flex; gap: 8px; margin-top: 12px;
+            align-self: flex-end;
+          }
+          .ad-buttons.full-width { width: 100%; align-self: stretch; }
+
+          .ad-btn {
+            display: flex; align-items: center; justify-content: center;
+            height: 32px; padding: 0 10px;
+            border-radius: 8px; font-size: 12px; font-weight: 500;
+            font-family: 'Inter', sans-serif; cursor: pointer;
+            border: none; white-space: nowrap;
+          }
+          .ad-buttons.full-width .ad-btn { flex: 1 0 0; }
+          .ad-btn.cancel {
+            background: var(--dialog-btn-cancel-bg);
+            border: 1px solid var(--dialog-btn-cancel-border);
+            color: var(--dialog-btn-cancel-text);
+          }
+          .ad-btn.confirm-default {
+            background: var(--dialog-btn-primary-bg);
+            color: var(--dialog-btn-primary-text);
+          }
+          .ad-btn.confirm-destructive {
+            background: var(--destructive-red-600);
+            color: var(--destructive-red-50-text, #fef2f2);
+          }
+
+          /* Theme toggle pill */
+          .theme-toggle {
+            display: flex; background: var(--neutral-100);
+            border-radius: 6px; padding: 2px; gap: 2px;
+          }
+          .theme-btn {
+            font-size: 11px; font-weight: 500;
+            padding: 3px 10px; border-radius: 4px;
+            border: none; cursor: pointer; background: none;
+            color: var(--neutral-500); transition: all 0.15s;
+          }
+          .theme-btn.active {
+            background: white;
+            color: var(--neutral-900);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+          }
+          .preview-top {
+            display: flex; align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+          }
+        </style>
+
+        <!-- Variant 1: Default / Default -->
+        <div class="section">
+          <div class="section-title">Default</div>
+          <div class="section-desc">Neutral confirmation — horizontal layout with icon, title, body, and Cancel + Continue buttons.</div>
+          <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(this,'ad-default')">Preview</button>
+            <button class="tab-btn" onclick="switchTab(this,'ad-default-code')">Code</button>
+          </div>
+          <div class="tab-panel active" id="tab-ad-default">
+            <div class="preview-box dialog-preview" id="dp-default" style="padding:32px;">
+              <div class="preview-top">
+                <span class="preview-label">Size=Default · State=Default</span>
+                <div class="theme-toggle">
+                  <button class="theme-btn active" onclick="setDialogTheme('dp-default','light',this)">☀ Light</button>
+                  <button class="theme-btn" onclick="setDialogTheme('dp-default','dark',this)">☾ Dark</button>
+                </div>
+              </div>
+              <div class="ad-card size-default">
+                <div class="ad-main">
+                  <div class="ad-icon-wrap">
+                    <img class="ad-icon" src="https://www.figma.com/api/mcp/asset/c8315beb-7a02-4a53-aeda-d83a725b8103" alt="" />
+                  </div>
+                  <div class="ad-text">
+                    <p class="ad-title">Are you sure?</p>
+                    <p class="ad-desc">This is an action that cannot be undone. Make sure that's something you are okay with as your data will be deleted forever.</p>
+                  </div>
+                </div>
+                <div class="ad-divider"></div>
+                <div class="ad-buttons">
+                  <button class="ad-btn cancel">Cancel</button>
+                  <button class="ad-btn confirm-default">Continue</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-panel" id="tab-ad-default-code">
+            <div class="code-wrap">
+              <div class="code-toolbar">
+                <span class="code-lang">tsx</span>
+                <div class="code-actions">
+                  <button class="code-btn" onclick="copyCode(this,'code-ad-default')">Copy</button>
+                  <a class="code-btn" href="AlertDialog.tsx" download>↓ Download</a>
+                </div>
+              </div>
+              <pre><code class="language-tsx" id="code-ad-default">&lt;AlertDialog
+  title="Are you sure?"
+  description="This is an action that cannot be undone."
+  cancelLabel="Cancel"
+  confirmLabel="Continue"
+  onCancel={() =&gt; setOpen(false)}
+  onConfirm={handleConfirm}
+/&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Variant 2: Default / Destructive -->
+        <div class="section">
+          <div class="section-title">Destructive</div>
+          <div class="section-desc">Red delete confirmation — same horizontal layout with destructive icon background and red Delete button.</div>
+          <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(this,'ad-destructive')">Preview</button>
+            <button class="tab-btn" onclick="switchTab(this,'ad-destructive-code')">Code</button>
+          </div>
+          <div class="tab-panel active" id="tab-ad-destructive">
+            <div class="preview-box dialog-preview" id="dp-destructive" style="padding:32px;">
+              <div class="preview-top">
+                <span class="preview-label">Size=Default · State=Destructive</span>
+                <div class="theme-toggle">
+                  <button class="theme-btn active" onclick="setDialogTheme('dp-destructive','light',this)">☀ Light</button>
+                  <button class="theme-btn" onclick="setDialogTheme('dp-destructive','dark',this)">☾ Dark</button>
+                </div>
+              </div>
+              <div class="ad-card size-default">
+                <div class="ad-main">
+                  <div class="ad-icon-wrap destructive">
+                    <img class="ad-icon" src="https://www.figma.com/api/mcp/asset/744f1c1b-d701-4885-aeeb-29685fef7705" alt="" />
+                  </div>
+                  <div class="ad-text">
+                    <p class="ad-title">Are you sure?</p>
+                    <p class="ad-desc">This is an action that cannot be undone. Make sure that's something you are okay with as your data will be deleted forever.</p>
+                  </div>
+                </div>
+                <div class="ad-divider"></div>
+                <div class="ad-buttons">
+                  <button class="ad-btn cancel">Cancel</button>
+                  <button class="ad-btn confirm-destructive">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-panel" id="tab-ad-destructive-code">
+            <div class="code-wrap">
+              <div class="code-toolbar">
+                <span class="code-lang">tsx</span>
+                <div class="code-actions">
+                  <button class="code-btn" onclick="copyCode(this,'code-ad-destructive')">Copy</button>
+                  <a class="code-btn" href="AlertDialog.tsx" download>↓ Download</a>
+                </div>
+              </div>
+              <pre><code class="language-tsx" id="code-ad-destructive">&lt;AlertDialog
+  variant="destructive"
+  title="Are you sure?"
+  description="This is an action that cannot be undone."
+  cancelLabel="Cancel"
+  confirmLabel="Delete"
+  onCancel={() =&gt; setOpen(false)}
+  onConfirm={handleDelete}
+/&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Variant 3: sm / Default -->
+        <div class="section">
+          <div class="section-title">Small — Default</div>
+          <div class="section-desc">Compact centered layout (317px) with stacked icon, centered text, and full-width buttons.</div>
+          <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(this,'ad-sm-default')">Preview</button>
+            <button class="tab-btn" onclick="switchTab(this,'ad-sm-default-code')">Code</button>
+          </div>
+          <div class="tab-panel active" id="tab-ad-sm-default">
+            <div class="preview-box dialog-preview" id="dp-sm-default" style="padding:32px; align-items:center;">
+              <div class="preview-top" style="width:100%;">
+                <span class="preview-label">Size=sm · State=Default</span>
+                <div class="theme-toggle">
+                  <button class="theme-btn active" onclick="setDialogTheme('dp-sm-default','light',this)">☀ Light</button>
+                  <button class="theme-btn" onclick="setDialogTheme('dp-sm-default','dark',this)">☾ Dark</button>
+                </div>
+              </div>
+              <div class="ad-card size-sm">
+                <div class="ad-main centered">
+                  <div class="ad-icon-wrap">
+                    <img class="ad-icon" src="https://www.figma.com/api/mcp/asset/c8315beb-7a02-4a53-aeda-d83a725b8103" alt="" />
+                  </div>
+                  <div class="ad-text centered">
+                    <p class="ad-title">Are you sure?</p>
+                    <p class="ad-desc">This is an action that cannot be undone. Make sure that's something you are okay with as your data will be deleted forever.</p>
+                  </div>
+                </div>
+                <div class="ad-divider"></div>
+                <div class="ad-buttons full-width">
+                  <button class="ad-btn cancel">Cancel</button>
+                  <button class="ad-btn confirm-default">Continue</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-panel" id="tab-ad-sm-default-code">
+            <div class="code-wrap">
+              <div class="code-toolbar">
+                <span class="code-lang">tsx</span>
+                <div class="code-actions">
+                  <button class="code-btn" onclick="copyCode(this,'code-ad-sm-default')">Copy</button>
+                  <a class="code-btn" href="AlertDialog.tsx" download>↓ Download</a>
+                </div>
+              </div>
+              <pre><code class="language-tsx" id="code-ad-sm-default">&lt;AlertDialog
+  size="sm"
+  title="Are you sure?"
+  description="This is an action that cannot be undone."
+  onCancel={() =&gt; setOpen(false)}
+  onConfirm={handleConfirm}
+/&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Variant 4: sm / Destructive -->
+        <div class="section">
+          <div class="section-title">Small — Destructive</div>
+          <div class="section-desc">Compact centered delete confirmation with full-width red Delete button.</div>
+          <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(this,'ad-sm-destructive')">Preview</button>
+            <button class="tab-btn" onclick="switchTab(this,'ad-sm-destructive-code')">Code</button>
+          </div>
+          <div class="tab-panel active" id="tab-ad-sm-destructive">
+            <div class="preview-box dialog-preview" id="dp-sm-destructive" style="padding:32px; align-items:center;">
+              <div class="preview-top" style="width:100%;">
+                <span class="preview-label">Size=sm · State=Destructive</span>
+                <div class="theme-toggle">
+                  <button class="theme-btn active" onclick="setDialogTheme('dp-sm-destructive','light',this)">☀ Light</button>
+                  <button class="theme-btn" onclick="setDialogTheme('dp-sm-destructive','dark',this)">☾ Dark</button>
+                </div>
+              </div>
+              <div class="ad-card size-sm">
+                <div class="ad-main centered">
+                  <div class="ad-icon-wrap destructive">
+                    <img class="ad-icon" src="https://www.figma.com/api/mcp/asset/744f1c1b-d701-4885-aeeb-29685fef7705" alt="" />
+                  </div>
+                  <div class="ad-text centered">
+                    <p class="ad-title">Are you sure?</p>
+                    <p class="ad-desc">This is an action that cannot be undone. Make sure that's something you are okay with as your data will be deleted forever.</p>
+                  </div>
+                </div>
+                <div class="ad-divider"></div>
+                <div class="ad-buttons full-width">
+                  <button class="ad-btn cancel">Cancel</button>
+                  <button class="ad-btn confirm-destructive">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-panel" id="tab-ad-sm-destructive-code">
+            <div class="code-wrap">
+              <div class="code-toolbar">
+                <span class="code-lang">tsx</span>
+                <div class="code-actions">
+                  <button class="code-btn" onclick="copyCode(this,'code-ad-sm-destructive')">Copy</button>
+                  <a class="code-btn" href="AlertDialog.tsx" download>↓ Download</a>
+                </div>
+              </div>
+              <pre><code class="language-tsx" id="code-ad-sm-destructive">&lt;AlertDialog
+  variant="destructive"
+  size="sm"
+  title="Are you sure?"
+  description="This is an action that cannot be undone."
+  onCancel={() =&gt; setOpen(false)}
+  onConfirm={handleDelete}
+  confirmLabel="Delete"
+/&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Props -->
+        <div class="section">
+          <div class="section-title">Props</div>
+          <div class="code-wrap">
+            <table class="props-table">
+              <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><span class="prop-name">variant</span></td><td><span class="prop-type">"default" | "destructive"</span></td><td><span class="prop-default">"default"</span></td><td>Neutral or destructive (red) visual tone</td></tr>
+                <tr><td><span class="prop-name">size</span></td><td><span class="prop-type">"default" | "sm"</span></td><td><span class="prop-default">"default"</span></td><td>default=384px horizontal; sm=317px centered stacked</td></tr>
+                <tr><td><span class="prop-name">icon</span></td><td><span class="prop-type">boolean</span></td><td><span class="prop-default">true</span></td><td>Show the leading trash icon</td></tr>
+                <tr><td><span class="prop-name">title</span></td><td><span class="prop-type">string</span></td><td><span class="prop-default">"Are you sure?"</span></td><td>Dialog headline</td></tr>
+                <tr><td><span class="prop-name">description</span></td><td><span class="prop-type">string</span></td><td><span class="prop-default">—</span></td><td>Supporting body copy</td></tr>
+                <tr><td><span class="prop-name">cancelLabel</span></td><td><span class="prop-type">string</span></td><td><span class="prop-default">"Cancel"</span></td><td>Cancel button label</td></tr>
+                <tr><td><span class="prop-name">confirmLabel</span></td><td><span class="prop-type">string</span></td><td><span class="prop-default">"Continue" / "Delete"</span></td><td>Confirm button label (auto-derived from variant)</td></tr>
+                <tr><td><span class="prop-name">onCancel</span></td><td><span class="prop-type">() =&gt; void</span></td><td><span class="prop-default">—</span></td><td>Called when Cancel is clicked</td></tr>
+                <tr><td><span class="prop-name">onConfirm</span></td><td><span class="prop-type">() =&gt; void</span></td><td><span class="prop-default">—</span></td><td>Called when the confirm button is clicked</td></tr>
+                <tr><td><span class="prop-name">className</span></td><td><span class="prop-type">string</span></td><td><span class="prop-default">—</span></td><td>Additional CSS class names</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Design tokens -->
+        <div class="section">
+          <div class="section-title">Design Tokens Used</div>
+          <div class="code-wrap">
+            <table class="props-table">
+              <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Used for</th></tr></thead>
+              <tbody>
+                <tr><td><span class="prop-name">Background / Foreground</span></td><td><span class="prop-type">#ffffff</span></td><td><span class="prop-type">#18181b</span></td><td>Dialog card background</td></tr>
+                <tr><td><span class="prop-name">Neutral/200</span></td><td><span class="prop-type">#e5e5e5</span></td><td><span class="prop-type">#3f3f46</span></td><td>Border + divider</td></tr>
+                <tr><td><span class="prop-name">Neutral/950</span></td><td><span class="prop-type">#0a0a0a</span></td><td><span class="prop-type">#fafafa</span></td><td>Title + primary button bg</td></tr>
+                <tr><td><span class="prop-name">Neutral/500</span></td><td><span class="prop-type">#737373</span></td><td><span class="prop-type">#71717a</span></td><td>Description text</td></tr>
+                <tr><td><span class="prop-name">Neutral/100</span></td><td><span class="prop-type">#f5f5f5</span></td><td><span class="prop-type">#27272a</span></td><td>Default icon background</td></tr>
+                <tr><td><span class="prop-name">Destructive red/50</span></td><td><span class="prop-type">#fef2f2</span></td><td><span class="prop-type">#450a0a</span></td><td>Destructive icon background</td></tr>
+                <tr><td><span class="prop-name">Destructive red/600</span></td><td><span class="prop-type">#dc2626</span></td><td><span class="prop-type">#dc2626</span></td><td>Delete button background</td></tr>
+                <tr><td><span class="prop-name">Radius/2xl</span></td><td><span class="prop-type">16px</span></td><td><span class="prop-type">16px</span></td><td>Card border-radius</td></tr>
+                <tr><td><span class="prop-name">Radius/md</span></td><td><span class="prop-type">8px</span></td><td><span class="prop-type">8px</span></td><td>Icon wrapper + button border-radius</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Coming soon (generic) ───────────────────────────────── -->
+    <div class="page" id="page-coming-soon">
+      <div class="page-content">
+        <div class="coming-soon">
+          <div class="coming-soon-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--neutral-300)">
+              <circle cx="10" cy="20" r="2.5" fill="currentColor"/>
+              <circle cx="20" cy="20" r="2.5" fill="currentColor"/>
+              <circle cx="30" cy="20" r="2.5" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="coming-soon-title" id="coming-soon-name">Coming Soon</div>
+          <div class="coming-soon-desc">This component is documented in Figma but hasn't been built yet. View the design in Figma or check back soon.</div>
+          <a class="coming-soon-link" href="https://www.figma.com/design/25aJqGSvglICjHhLEM5xg9/Espresso-UI-%E2%98%95" target="_blank">↗ View in Figma</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── Navigation ─────────────────────────────────────────────────
+const BUILT_PAGES = ['overview','colors','typography','spacing','radius','alerts','alert-dialog'];
+
+function navigate(page) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  // Update nav
+  document.querySelectorAll('.nav-item').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === page);
+  });
+
+  if (BUILT_PAGES.includes(page)) {
+    const el = document.getElementById('page-' + page);
+    if (el) { el.classList.add('active'); return; }
+  }
+
+  // Coming soon
+  const name = page.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  document.getElementById('coming-soon-name').textContent = name;
+  document.getElementById('page-coming-soon').classList.add('active');
+}
+
+// ── Tab switching ───────────────────────────────────────────────
+function switchTab(btn, panelId) {
+  const tabs = btn.closest('.tabs');
+  tabs.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Find sibling panels (next section siblings)
+  const container = tabs.parentElement;
+  container.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + panelId).classList.add('active');
+}
+
+// ── Copy code ───────────────────────────────────────────────────
+function copyCode(btn, id) {
+  const code = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ── Dialog theme toggle ─────────────────────────────────────────
+function setDialogTheme(previewId, theme, btn) {
+  const preview = document.getElementById(previewId);
+  preview.classList.toggle('theme-dark', theme === 'dark');
+  // Update sibling buttons
+  btn.closest('.theme-toggle').querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── Copy swatch hex ────────────────────────────────────────────
+function copySwatch(hex) {
+  navigator.clipboard.writeText(hex).then(() => {
+    // brief flash notification
+    const toast = document.createElement('div');
+    toast.textContent = 'Copied ' + hex;
+    Object.assign(toast.style, {
+      position:'fixed', bottom:'24px', left:'50%', transform:'translateX(-50%)',
+      background:'#18181b', color:'white', padding:'8px 16px',
+      borderRadius:'8px', fontSize:'13px', fontFamily:'monospace',
+      zIndex:9999, pointerEvents:'none', opacity:1, transition:'opacity 0.3s'
+    });
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = 0; setTimeout(() => toast.remove(), 300); }, 1500);
+  });
+}
+
+// ── Build color palettes ────────────────────────────────────────
+function buildPalette(containerId, swatches) {
+  const c = document.getElementById(containerId);
+  const wrap = document.createElement('div');
+  wrap.className = 'palette-swatches';
+  swatches.forEach(([label, hex]) => {
+    const s = document.createElement('div');
+    s.className = 'swatch';
+    s.style.background = hex;
+    s.title = hex;
+    s.onclick = () => copySwatch(hex);
+    const dark = isDark(hex);
+    s.innerHTML = `<span class="swatch-tooltip">${label}<br>${hex}</span><span class="swatch-label" style="color:${dark?'rgba(255,255,255,0.7)':'rgba(0,0,0,0.5)'}">${label}</span>`;
+    wrap.appendChild(s);
+  });
+  c.appendChild(wrap);
+}
+
+function isDark(hex) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return (0.299*r + 0.587*g + 0.114*b) < 128;
+}
+
+buildPalette('palette-blue', [
+  ['50','#eff6ff'],['100','#dbeafe'],['200','#bfdbfe'],['300','#93c5fd'],
+  ['400','#60a5fa'],['500','#3b82f6'],['600','#2563eb'],['700','#1d4ed8'],
+  ['800','#1e40af'],['900','#1e3a8a'],['950','#172554']
+]);
+buildPalette('palette-red', [
+  ['50','#fef2f2'],['100','#fee2e2'],['200','#fecaca'],['300','#fca5a5'],
+  ['400','#f87171'],['500','#ef4444'],['600','#dc2626'],['700','#b91c1c'],
+  ['800','#991b1b'],['900','#7f1d1d'],['950','#450a0a']
+]);
+buildPalette('palette-green', [
+  ['50','#f0fdf4'],['100','#dcfce7'],['500','#22c55e'],['600','#16a34a'],['700','#15803d']
+]);
+buildPalette('palette-amber', [
+  ['50','#fffbeb'],['100','#fef3c7'],['500','#f59e0b'],['600','#d97706'],['700','#b45309']
+]);
+buildPalette('palette-zinc', [
+  ['50','#fafafa'],['100','#f4f4f5'],['200','#e4e4e7'],['300','#d4d4d8'],
+  ['400','#a1a1aa'],['500','#71717a'],['600','#525252'],['700','#3f3f46'],
+  ['800','#27272a'],['900','#18181b'],['950','#09090b']
+]);
+buildPalette('palette-neutral', [
+  ['50','#fafafa'],['100','#f5f5f5'],['200','#e5e5e5'],['300','#d4d4d4'],
+  ['400','#a3a3a3'],['500','#737373'],['600','#525252'],['700','#404040'],
+  ['800','#262626'],['900','#171717'],['950','#0a0a0a']
+]);
+buildPalette('palette-slate', [
+  ['50','#f8fafc'],['100','#f1f5f9'],['200','#e2e8f0'],['300','#cbd5e1'],
+  ['400','#94a3b8'],['500','#64748b'],['600','#475569'],['700','#334155'],
+  ['800','#1e293b'],['900','#0f172a'],['950','#020617']
+]);
+
+// ── Build spacing scale ─────────────────────────────────────────
+const spacingData = [
+  ['1','4px'],['1-5','6px'],['2','8px'],['2-5','10px'],['3','12px'],['3-5','14px'],
+  ['4','16px'],['5','20px'],['6','24px'],['7','28px'],['8','32px'],['9','36px'],
+  ['10','40px'],['11','44px'],['12','48px'],['14','56px'],['16','64px'],
+  ['20','80px'],['24','96px'],['28','112px'],['32','128px'],['36','144px'],
+];
+const grid = document.getElementById('spacing-scale');
+spacingData.forEach(([token, px]) => {
+  const row = document.createElement('div');
+  row.className = 'spacing-row';
+  const pxNum = parseInt(px);
+  row.innerHTML = `
+    <span class="spacing-token">${token}</span>
+    <span class="spacing-value">${px}</span>
+    <div class="spacing-bar-wrap"><div class="spacing-bar" style="width:${Math.min(pxNum * 1.5, 400)}px;"></div></div>`;
+  grid.appendChild(row);
+});
+
+// ── Syntax highlighting ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());
+hljs.highlightAll();
+</script>
+</body>
+</html>
