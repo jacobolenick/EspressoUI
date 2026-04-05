@@ -792,6 +792,88 @@
       line-height: 18px;
     }
 
+    /* ── Accordion component ─────────────────────────────────── */
+    .accordion-preview {
+      --acc-bg: #ffffff;
+      --acc-border: #d4d4d4;
+      --acc-trigger-bg: #fafafa;
+      --acc-trigger-text: #0a0a0a;
+      --acc-trigger-text-muted: #a3a3a3;
+      --acc-chevron: #a3a3a3;
+      --acc-divider: #d4d4d4;
+      --acc-content-text: #0a0a0a;
+      transition: background 0.2s;
+    }
+    .accordion-preview.theme-dark {
+      --acc-bg: #171717;
+      --acc-border: #404040;
+      --acc-trigger-bg: #0a0a0a;
+      --acc-trigger-text: #fafafa;
+      --acc-trigger-text-muted: #525252;
+      --acc-chevron: #525252;
+      --acc-divider: #404040;
+      --acc-content-text: #fafafa;
+      background: #000000;
+    }
+    .accordion {
+      width: 100%;
+      background: var(--acc-bg);
+      border: 1px solid var(--acc-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .accordion-item {
+      border-bottom: 1px solid var(--acc-divider);
+    }
+    .accordion-item:last-child { border-bottom: none; }
+    .accordion-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--acc-trigger-bg);
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--acc-trigger-text);
+      text-align: left;
+      transition: opacity 0.15s;
+    }
+    .accordion-trigger:hover { opacity: 0.75; }
+    .accordion-chevron {
+      flex-shrink: 0;
+      width: 20px; height: 20px;
+      color: var(--acc-chevron);
+      transition: transform 0.22s ease;
+    }
+    .accordion-trigger[aria-expanded="true"] .accordion-chevron {
+      transform: rotate(180deg);
+    }
+    .accordion-content-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.25s ease;
+      background: var(--acc-bg);
+      border-top: 0px solid var(--acc-divider);
+    }
+    .accordion-item.open .accordion-content-wrap {
+      grid-template-rows: 1fr;
+      border-top-width: 1px;
+    }
+    .accordion-content-inner {
+      overflow: hidden;
+    }
+    .accordion-content {
+      padding: 14px 16px;
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      line-height: var(--lh-sm);
+      color: var(--acc-content-text);
+    }
+
     /* ── Hamburger button ────────────────────────────────────── */
     .hamburger {
       display: none;
@@ -916,7 +998,8 @@
       </a>
       <!-- Coming soon pages, alphabetical from Figma -->
       <a class="nav-item" data-page="accordion" onclick="navigate('accordion'); return false;">
-        Accordion <span class="nav-item-soon">Soon</span>
+        <span class="nav-item-dot"></span>
+        Accordion
       </a>
       <a class="nav-item" data-page="alert-dialog" onclick="navigate('alert-dialog'); return false;">
         <span class="nav-item-dot"></span>
@@ -1588,6 +1671,153 @@
       </div>
     </div>
 
+    <!-- ── Accordion ────────────────────────────────────────────── -->
+    <div class="page" id="page-accordion">
+      <div class="page-content">
+        <div class="breadcrumb">
+          <span>Components</span><span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current">Accordion</span>
+        </div>
+        <div class="page-header">
+          <div class="component-meta">
+            <span class="component-badge badge-stable">Stable</span>
+            <span style="font-size:var(--text-xs);color:var(--neutral-400);font-family:var(--font-mono);">Accordion.tsx</span>
+          </div>
+          <h1 class="page-title">Accordion</h1>
+          <p class="page-description">A vertically stacked set of interactive headings that each reveal an associated section of content. Supports single and multiple open items.</p>
+        </div>
+        <hr class="page-divider" />
+
+        <!-- Default variant -->
+        <div class="section">
+          <div class="section-title">Default</div>
+          <div class="section-desc">Grouped accordion with a bordered container. First item open by default.</div>
+          <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(this,'accordion-default')">Preview</button>
+            <button class="tab-btn" onclick="switchTab(this,'accordion-default-code')">Code</button>
+          </div>
+          <div class="tab-panel active" id="tab-accordion-default">
+            <div class="preview-box accordion-preview" id="acc-default">
+              <div class="preview-top">
+                <span class="preview-label">Variant=Default</span>
+                <div class="theme-toggle">
+                  <button class="theme-btn active" onclick="setDialogTheme('acc-default','light',this)">☀ Light</button>
+                  <button class="theme-btn" onclick="setDialogTheme('acc-default','dark',this)">☾ Dark</button>
+                </div>
+              </div>
+              <div class="accordion">
+                <div class="accordion-item open">
+                  <button class="accordion-trigger" aria-expanded="true" onclick="toggleAccordion(this)">
+                    What is Espresso UI?
+                    <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                  </button>
+                  <div class="accordion-content-wrap">
+                    <div class="accordion-content-inner">
+                      <div class="accordion-content">A design system built for speed and consistency, sourced directly from Figma variables and components.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+                    How do I install it?
+                    <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                  </button>
+                  <div class="accordion-content-wrap">
+                    <div class="accordion-content-inner">
+                      <div class="accordion-content">Copy the component file from the site, drop it into your project, and import it wherever you need it.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+                    Can I customise the tokens?
+                    <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                  </button>
+                  <div class="accordion-content-wrap">
+                    <div class="accordion-content-inner">
+                      <div class="accordion-content">Yes — all tokens are Figma variables. Update them in Figma and re-export to keep your code and design in sync.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+                    Is dark mode supported?
+                    <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                  </button>
+                  <div class="accordion-content-wrap">
+                    <div class="accordion-content-inner">
+                      <div class="accordion-content">Yes. Every component ships with light and dark token sets, toggled via a CSS class on the parent container.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-panel" id="tab-accordion-default-code">
+            <div class="code-wrap">
+              <div class="code-toolbar">
+                <span class="code-lang">tsx</span>
+                <div class="code-actions">
+                  <button class="code-btn" onclick="copyCode(this,'code-accordion-default')">Copy</button>
+                </div>
+              </div>
+              <pre><code class="language-tsx" id="code-accordion-default">&lt;Accordion type="single" defaultValue="item-1"&gt;
+  &lt;AccordionItem value="item-1"&gt;
+    &lt;AccordionTrigger&gt;What is Espresso UI?&lt;/AccordionTrigger&gt;
+    &lt;AccordionContent&gt;
+      A design system built for speed and consistency.
+    &lt;/AccordionContent&gt;
+  &lt;/AccordionItem&gt;
+  &lt;AccordionItem value="item-2"&gt;
+    &lt;AccordionTrigger&gt;How do I install it?&lt;/AccordionTrigger&gt;
+    &lt;AccordionContent&gt;
+      Copy the component file and import it into your project.
+    &lt;/AccordionContent&gt;
+  &lt;/AccordionItem&gt;
+&lt;/Accordion&gt;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Props -->
+        <div class="section">
+          <div class="section-title">Props</div>
+          <div class="code-wrap">
+            <table class="props-table">
+              <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><span class="prop-name">type</span></td><td><span class="prop-type">"single" | "multiple"</span></td><td><span class="prop-default">"single"</span></td><td>Allow one or many items open at once</td></tr>
+                <tr><td><span class="prop-name">defaultValue</span></td><td><span class="prop-type">string | string[]</span></td><td><span class="prop-default">—</span></td><td>Item(s) open on initial render</td></tr>
+                <tr><td><span class="prop-name">value</span></td><td><span class="prop-type">string | string[]</span></td><td><span class="prop-default">—</span></td><td>Controlled open state</td></tr>
+                <tr><td><span class="prop-name">onValueChange</span></td><td><span class="prop-type">(value) =&gt; void</span></td><td><span class="prop-default">—</span></td><td>Called when open state changes</td></tr>
+                <tr><td><span class="prop-name">disabled</span></td><td><span class="prop-type">boolean</span></td><td><span class="prop-default">false</span></td><td>Disable all items</td></tr>
+                <tr><td><span class="prop-name">className</span></td><td><span class="prop-type">string</span></td><td><span class="prop-default">—</span></td><td>Additional CSS class names</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Design tokens -->
+        <div class="section">
+          <div class="section-title">Design Tokens Used</div>
+          <div class="code-wrap">
+            <table class="props-table">
+              <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Used for</th></tr></thead>
+              <tbody>
+                <tr><td><span class="prop-name">Neutral/50</span></td><td><span class="prop-type">#fafafa</span></td><td><span class="prop-type">#0a0a0a</span></td><td>Trigger background</td></tr>
+                <tr><td><span class="prop-name">Neutral/950</span></td><td><span class="prop-type">#0a0a0a</span></td><td><span class="prop-type">#fafafa</span></td><td>Trigger text</td></tr>
+                <tr><td><span class="prop-name">Neutral/400</span></td><td><span class="prop-type">#a3a3a3</span></td><td><span class="prop-type">#525252</span></td><td>Chevron &amp; muted text</td></tr>
+                <tr><td><span class="prop-name">Neutral/300</span></td><td><span class="prop-type">#d4d4d4</span></td><td><span class="prop-type">#404040</span></td><td>Container border &amp; dividers</td></tr>
+                <tr><td><span class="prop-name">Background</span></td><td><span class="prop-type">#ffffff</span></td><td><span class="prop-type">#171717</span></td><td>Container &amp; content background</td></tr>
+                <tr><td><span class="prop-name">Radius/lg</span></td><td><span class="prop-type">10px</span></td><td><span class="prop-type">10px</span></td><td>Container border-radius</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <!-- ── Alert Dialog ──────────────────────────────────────────── -->
     <div class="page" id="page-alert-dialog">
       <div class="page-content">
@@ -2030,7 +2260,7 @@
 
 <script>
 // ── Navigation ─────────────────────────────────────────────────
-const BUILT_PAGES = ['overview','colors','typography','spacing','radius','alerts','alert-dialog'];
+const BUILT_PAGES = ['overview','colors','typography','spacing','radius','alerts','accordion','alert-dialog'];
 
 function toggleSidebar() {
   document.querySelector('.sidebar').classList.toggle('open');
@@ -2081,6 +2311,21 @@ function copyCode(btn, id) {
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
   });
+}
+
+// ── Accordion toggle ────────────────────────────────────────────
+function toggleAccordion(trigger) {
+  const item = trigger.closest('.accordion-item');
+  const isOpen = item.classList.contains('open');
+  // Close all siblings (single-open behaviour)
+  item.closest('.accordion').querySelectorAll('.accordion-item').forEach(i => {
+    i.classList.remove('open');
+    i.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'false');
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    trigger.setAttribute('aria-expanded', 'true');
+  }
 }
 
 // ── Dialog theme toggle ─────────────────────────────────────────
